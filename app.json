@@ -1,11 +1,4 @@
 {
-  "addons": [
-    "heroku-postgresql",
-    "librato",
-    "mailgun",
-    "papertrail",
-    "rediscloud"
-  ],
   "env": {
     "AIRFLOW__CELERY__WORKER_CONCURRENCY": {
       "description": "Concurrency used when starting workers",
