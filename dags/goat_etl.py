@@ -93,7 +93,7 @@ def extract():
 
         step = 1
 
-        current_dir = '/opt/airflow/dags/'
+        current_dir = '/app/dags/'
         data_dir = os.path.join(current_dir, "goat")
 
         filename = f"goat-{datetime.now().strftime('%d-%m-%Y')}-file-{step}.json"
@@ -424,7 +424,7 @@ def load():
         create_table(curr, create_table_query)
 
         # read in json files in data dir
-        files = glob.glob("/opt/airflow/dags/goat/*.json")
+        files = glob.glob("/app/dags/goat/*.json")
 
         for file in files:
             # get data from file
@@ -443,16 +443,16 @@ def load():
 
 def zip_dir():
     make_archive(
-        f"/opt/airflow/dags/goat-{datetime.now().strftime('%d-%m-%Y')}",
+        f"/app/dags/goat-{datetime.now().strftime('%d-%m-%Y')}",
         "zip",
-        "/opt/airflow/dags/goat/"
+        "/app/dags/goat/"
     )
 
 def blob_upload():
     try:
         container_client = ContainerClient.from_connection_string(conn_string, container)
 
-        for path in glob.glob("/opt/airflow/dags/archive/*"):
+        for path in glob.glob("/app/dags/archive/*"):
             print(path)
             file = path.split('/')[-1]
             blob_client = container_client.get_blob_client(file)
@@ -492,7 +492,7 @@ with DAG(
 
     zip_to_archive = BashOperator(
         task_id='zip_to_archive',
-        bash_command='mv /opt/airflow/dags/*.zip /opt/airflow/dags/archive/'
+        bash_command='mv /app/dags/*.zip /app/dags/archive/'
     )
 
     archive_to_azure_blob = PythonOperator(
@@ -502,12 +502,12 @@ with DAG(
 
     delete_archive_files = BashOperator(
         task_id='delete_archive_files',
-        bash_command= 'rm /opt/airflow/dags/archive/*'
+        bash_command= 'rm /app/dags/archive/*'
     )
 
     delete_goat_files = BashOperator(
         task_id='delete_goat_files',
-        bash_command= 'rm /opt/airflow/dags/goat/*'
+        bash_command= 'rm /app/dags/goat/*'
     )
 
     extract_data >> transform_load >> archive_json_files >> zip_to_archive >> archive_to_azure_blob >> [delete_archive_files, delete_goat_files]

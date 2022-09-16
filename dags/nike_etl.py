@@ -92,7 +92,7 @@ def extract():
         count = 60
         step = 1
 
-        current_dir = '/opt/airflow/dags/'
+        current_dir = '/app/dags/'
         data_dir = os.path.join(current_dir, "nike")
 
         for anchor in range(60, 1440, 60):
@@ -314,7 +314,7 @@ def load():
         create_table(curr, create_table_query)
 
         # read in json files in data dir
-        files = glob.glob("/opt/airflow/dags/nike/*.json")
+        files = glob.glob("/app/dags/nike/*.json")
 
         for file in files:
             # get data from file
@@ -333,16 +333,16 @@ def load():
 
 def zip_dir():
     make_archive(
-        f"/opt/airflow/dags/nike-{datetime.now().strftime('%d-%m-%Y')}",
+        f"/app/dags/nike-{datetime.now().strftime('%d-%m-%Y')}",
         "zip",
-        "/opt/airflow/dags/nike/"
+        "/app/dags/nike/"
     )
 
 def blob_upload():
     try:
         container_client = ContainerClient.from_connection_string(conn_string, container)
 
-        for path in glob.glob("/opt/airflow/dags/archive/*"):
+        for path in glob.glob("/app/dags/archive/*"):
             print(path)
             file = path.split('/')[-1]
             blob_client = container_client.get_blob_client(file)
@@ -382,7 +382,7 @@ with DAG(
 
     zip_to_archive = BashOperator(
         task_id='zip_to_archive',
-        bash_command='mv /opt/airflow/dags/*.zip /opt/airflow/dags/archive/'
+        bash_command='mv /app/dags/*.zip /app/dags/archive/'
     )
 
     archive_to_azure_blob = PythonOperator(
@@ -392,12 +392,12 @@ with DAG(
 
     delete_archive_files = BashOperator(
         task_id='delete_archive_files',
-        bash_command= 'rm /opt/airflow/dags/archive/*'
+        bash_command= 'rm /app/dags/archive/*'
     )
 
     delete_nike_files = BashOperator(
         task_id='delete_nike_files',
-        bash_command= 'rm /opt/airflow/dags/nike/*'
+        bash_command= 'rm /app/dags/nike/*'
     )
 
 
