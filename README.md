@@ -2,12 +2,9 @@
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-Deploy [Airflow](https://airflow.apache.org/) to [Heroku](https://www.heroku.com/). Read the [blog post](https://remarkablemark.org/blog/2022/07/13/deploy-airflow-to-heroku/).
-
 ## Stack
 
 - [Celery](https://docs.celeryq.dev/)
-- [Mailgun](https://elements.heroku.com/addons/mailgun)
 - [PostgreSQL](https://elements.heroku.com/addons/heroku-postgresql)
 - [Redis](https://elements.heroku.com/addons/rediscloud)
 
