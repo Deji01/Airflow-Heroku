@@ -110,11 +110,3 @@ airflow users create \
   --role Admin \
   --email admin@example.org
 ```
-
-## Resources
-
-- [How to deploy Airflow to Heroku](https://remarkablemark.org/blog/2022/07/13/deploy-airflow-to-heroku/)
-- [heroku/heroku-airflow](https://github.com/heroku/heroku-airflow)
-- [slyapustin/airflow-on-heroku](https://github.com/slyapustin/airflow-on-heroku)
-- [jsoyland/heroku_airflow](https://github.com/jsoyland/heroku_airflow)
-- [Running Airflow on Heroku](https://medium.com/@damesavram/running-airflow-on-heroku-ed1d28f8013d)
