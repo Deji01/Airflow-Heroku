@@ -1,0 +1,68 @@
+{
+  "addons": [
+    "heroku-postgresql",
+    "librato",
+    "mailgun",
+    "papertrail",
+    "rediscloud"
+  ],
+  "env": {
+    "AIRFLOW__CELERY__WORKER_CONCURRENCY": {
+      "description": "Concurrency used when starting workers",
+      "value": 2
+    },
+    "AIRFLOW__CORE__FERNET_KEY": {
+      "description": "Fernet key to encrypt passwords",
+      "required": true
+    },
+    "AIRFLOW_HOME": {
+      "description": "Home folder for airflow",
+      "required": true,
+      "value": "/app"
+    },
+    "AIRFLOW__WEBSERVER__BASE_URL": {
+      "description": "Base url of your website",
+      "value": "http://localhost:8080/"
+    },
+    "AIRFLOW__WEBSERVER__COOKIE_SAMESITE": {
+      "description": "Set samesite policy on session cookie",
+      "value": "Strict"
+    },
+    "AIRFLOW__WEBSERVER__COOKIE_SECURE": {
+      "description": "Set secure flag on session cookie",
+      "value": "True"
+    },
+    "AIRFLOW__WEBSERVER__SECRET_KEY": {
+      "description": "Secret key used to run your flask app",
+      "required": true
+    },
+    "AIRFLOW__WEBSERVER__WORKERS": {
+      "description": "Number of workers to run the Gunicorn web server",
+      "value": 2
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "hobby"
+    },
+    "worker": {
+      "quantity": 1,
+      "size": "hobby"
+    },
+    "scheduler": {
+      "quantity": 1,
+      "size": "hobby"
+    }
+  },
+  "scripts": {
+    "postdeploy": "airflow db init"
+  },
+  "environments": {
+    "review": {
+      "scripts": {
+        "postdeploy": "airflow db init && airflow users create -e admin@example.org -f FIRST_NAME -l LAST_NAME -p password -r Admin -u admin"
+      }
+    }
+  }
+}
