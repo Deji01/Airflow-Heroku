@@ -1,3 +1,4 @@
-apache-airflow[celery,postgres,redis]==2.3.3
+apache-airflow[postgres, password]==2.3.3
 azure-storage-blob==12.13.1
 psycopg2-binary==2.9.3
+
